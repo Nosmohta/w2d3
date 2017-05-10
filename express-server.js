@@ -10,7 +10,9 @@ const PORT = process.env.PORT || 8080; // default port 8080
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "9sm5xK": "http://www.google.com",
+  "dfgoin": "http://www.amazon.ca",
+  "sdfjkb": "http://www.wikipedia.com"
 };
 
 function startServer() {
@@ -31,19 +33,23 @@ function startServer() {
   app.get("/urls/new", (req, res) => {
     res.render("urls_new");
   })
-  .post("/urls/", (req, res) => {
+
+  app.post("/urls/", (req, res) => {
     let shortURL = generateRandomString(urlDatabase);
     urlDatabase[shortURL] = req.body.longURL;
-    let output = "Ok. " + req.body.longURL + " has been received and attached to database as:  " + shortURL;
-    console.log(urlDatabase);
-    //console.log(res)
-    res.statusCode = 302
+    //res.statusCode = 302
     res.redirect("/urls/"+shortURL)
   });
 
+  app.post("/urls/:id/delete", (req, res) => {
+      console.log("I recieved a post req to delete")
+      console.log(req.params.id);
+      delete urlDatabase[req.params.id];
+      res.redirect("/urls");
+  })
+
   app.get("/u/:shortURL", (req, res) => {
     let longURL = urlDatabase[req.params.shortURL]
-    console.log(longURL);
     res.redirect(longURL);
   });
 

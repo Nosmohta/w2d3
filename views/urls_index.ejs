@@ -3,15 +3,19 @@
 <html lang="en">
   <head>
     <title>TinyApp</title>
+    <% include ./partials/_head-general %>
   </head>
 
   <body>
     <div align=center>
       <% include ./partials/_header %>
       <ul >
-        <% for (let url in urls) { %>
-        <% let value = urls[url]; %>
-          <li ><%= value %>  : <%= url %></li>
+        <% for (let ShortUrl in urls) { %>
+        <% let value = urls[ShortUrl]; %>
+          <li ><%= value %>  : <%= ShortUrl %></li>
+          <form method="POST" action="/urls/<%= ShortUrl %>/delete" id="modify<%= ShortUrl%>">
+            <button form="modify<%= ShortUrl%>"> Delete </button>
+          </form>
         <% } %>
        </ul>
     </div>
