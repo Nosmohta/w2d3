@@ -9,7 +9,11 @@
     <div>
        <% include ./partials/_header %>
         <ul>
-          <li><%= urls[shortURL] %></li>
+          <li> <%= urls[shortURL] %></li>
+          <form method="POST">
+            <input id="updateURL" name="updateURL" type=text placeholder="<%= urls[shortURL]%>" >
+            <button action="/urls/<%= shortURL %>" for="updateURL"> Update </button>
+          </form>
        </ul>
     </div>
   </body>

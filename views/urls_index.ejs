@@ -13,11 +13,14 @@
         <% for (let ShortUrl in urls) { %>
         <% let value = urls[ShortUrl]; %>
           <li ><%= value %>  : <%= ShortUrl %></li>
-          <form method="POST" action="/urls/<%= ShortUrl %>/delete" id="modify<%= ShortUrl%>">
-            <button form="modify<%= ShortUrl%>"> Delete </button>
+          <form  id="delete<%= ShortUrl%>" method="POST" action="/urls/<%= ShortUrl %>/delete">
+            <button name="delete"  for="delete<%= ShortUrl%>"> Delete </button>
+          </form>
+          <form  id="edit<%= ShortUrl%>" method="GET" action="/urls/<%= ShortUrl %>" for="edit<%= ShortUrl%>">
+            <button name="edit"> Edit </button>
           </form>
         <% } %>
-       </ul>
+      </ul>
     </div>
   </body>
 </html>

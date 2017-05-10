@@ -22,7 +22,8 @@ function startServer() {
 
 
   app.get("/", (req, res) => {
-    res.end("Hello!");
+    let templateVars = { urls: urlDatabase };
+    res.render("urls_index", templateVars);
   });
 
   app.get("/urls", (req, res) => {
@@ -53,16 +54,23 @@ function startServer() {
     res.redirect(longURL);
   });
 
+
   app.get("/urls/:id", (req, res) => {
-    let templateVars = { shortURL: req.params.id,
-                         urls: urlDatabase
-                        };
-    res.render("urls_show", templateVars);
+    res.render("urls_show", {shortURL: req.params.id,
+                             urls: urlDatabase}
+    );
   });
+
+  app.post(("/urls/:id"), (req, res) => {
+    urlDatabase[req.params.id] = req.body.updateURL;
+    res.redirect("/urls/");
+  });
+
 
   app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}!`);
   });
+
 }
 
 
