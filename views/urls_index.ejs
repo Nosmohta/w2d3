@@ -10,13 +10,13 @@
     <div align=center>
       <% include ./partials/_header %>
       <ul >
-        <% for (let ShortUrl in urls) { %>
-        <% let value = urls[ShortUrl]; %>
-          <li ><%= value %>  : <%= ShortUrl %></li>
-          <form  id="delete<%= ShortUrl%>" method="POST" action="/urls/<%= ShortUrl %>/delete">
-            <button name="delete"  for="delete<%= ShortUrl%>"> Delete </button>
+        <% for (let shortUrl in urls) { %>
+        <% let value = urls[shortUrl]; %>
+          <li ><%= value %>  : <%= shortUrl %></li>
+          <form  id="delete<%= shortUrl%>" method="POST" action="/urls/<%= shortUrl %>/delete">
+            <button name="delete" > Delete </button>
           </form>
-          <form  id="edit<%= ShortUrl%>" method="GET" action="/urls/<%= ShortUrl %>" for="edit<%= ShortUrl%>">
+          <form  id="edit<%= shortUrl%>" method="GET" action="/urls/<%= shortUrl %>" for="edit<%= shortUrl%>">
             <button name="edit"> Edit </button>
           </form>
         <% } %>
