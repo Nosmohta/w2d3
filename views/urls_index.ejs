@@ -7,7 +7,7 @@
   </head>
 
   <body>
-    <div align=center>
+    <div align="center">
       <% include ./partials/_header %>
       <ul >
         <% for (let shortUrl in urls) { %>
@@ -16,7 +16,7 @@
           <form  id="delete<%= shortUrl%>" method="POST" action="/urls/<%= shortUrl %>/delete">
             <button name="delete" > Delete </button>
           </form>
-          <form  id="edit<%= shortUrl%>" method="GET" action="/urls/<%= shortUrl %>" for="edit<%= shortUrl%>">
+          <form  id="edit<%= shortUrl%>" method="GET" action="/urls/<%= shortUrl %>">
             <button name="edit"> Edit </button>
           </form>
         <% } %>

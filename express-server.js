@@ -48,8 +48,6 @@ function startServer() {
   })
 
   app.post("/urls/:id/delete", (req, res) => {
-      console.log("I recieved a post req to delete")
-      console.log(req.params.id);
       delete urlDatabase[req.params.id];
       res.redirect("/urls");
   });
@@ -69,22 +67,26 @@ function startServer() {
     res.redirect("/urls/");
   });
 
+  app.get( "/register", (req, res) => {
+    res.render( "register", templateVars);
+  });
+
+  app.post( "/register",  (req, res) => {
+    console.log("Attemp to register")
+    res.redirect("/register")
+  })
 
   app.get( "/login", (req, res) => {
     res.send( "You have tried to login");
   });
 
   app.post( "/login", (req, res) => {
-    //needs to check for preexisting usernames
-    console.log(req.body.username);
     res.cookie( "username", req.body.username);
     templateVars.username = req.body.username;
-    console.log( templateVars.username)
     res.redirect("/urls");
   });
 
   app.post( "/logout", (req, res) => {
-    // change current user to undefined.
     templateVars.username = undefined;
     res.redirect("/urls");
   });
