@@ -2,8 +2,10 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser')
 const crypto = require("crypto");
 const database = require("./database/database.js");
+
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -13,23 +15,23 @@ const users =database.users;
 
 console.log(database.users)
 
+// need to refactor code to access database)
 
 function startServer() {
 
   let templateVars = {
-    urls: urlDatabase,
-    username:  undefined ,
-    curShortURL: "",
-    msg: ""
+    urls: database.urlDatabase,
+    username:  undefined,
+    curShortURL: ""
   }
 
   app.set("view engine", "ejs");
 
   app.use(bodyParser.urlencoded({extended: true}));
+  app.use(cookieParser())
 
 
   app.get("/", (req, res) => {
-    let templateVars = { urls: urlDatabase };
     res.render("urls_index", templateVars);
   });
 
@@ -53,7 +55,7 @@ function startServer() {
   });
 
   app.get("/u/:shortURL", (req, res) => {
-    let longURL = urlDatabase[req.params.shortURL]
+    let longURL = templateVars.urls[req.params.shortURL]
     res.redirect(longURL);
   });
 
@@ -63,15 +65,13 @@ function startServer() {
   });
 
   app.post( "/urls/:id", (req, res) => {
-    urlDatabase[req.params.id] = req.body.updateURL;
+    templateVars.urls[req.params.id] = req.body.updateURL;
     res.redirect("/urls/");
   });
 
   app.get( "/register", (req, res) => {
     res.render( "register", templateVars);
   });
-
-
 
   app.post( "/register",  (req, res) => {
     if ( req.body.email == "") {
@@ -87,24 +87,36 @@ function startServer() {
     let id = generateRandomString(users);
     users[id] = { "id" : id,
                   "email" : req.body.email,
-                  "password" : req.body.password,//Make hash
+                  "password" : req.body.password,
                   "urlsDB": {}
     };
     res.cookie( "userID", id);
     console.log(users)
     res.redirect("/urls");
-
   });
 
 
   app.get( "/login", (req, res) => {
-    res.send( "You have tried to login");
+    res.render( "login", templateVars);
   });
 
   app.post( "/login", (req, res) => {
-    res.cookie( "username", req.body.username);
-    templateVars.username = req.body.username;
-    res.redirect("/urls");
+    let userPW = req.body.password;
+    let userEmail = req.body.email;
+    if ( !userPW || !userEmail) {
+      res.send("Please enter an email and password.")
+    };
+    for ( let user in users) {
+      if ( users[user].email === userEmail) {
+        templateVars.username = users[user].name;
+        templateVars.urls = users[user].urlsDB;
+        if ( !req.cookies.userID) {
+          res.cookie("userID" , users[user].id );
+        }
+        res.redirect("/");
+      };
+    };
+    res.send("email and Password do not match. Please try again.");
   });
 
   app.post( "/logout", (req, res) => {
@@ -117,6 +129,8 @@ function startServer() {
   });
 
 }
+
+
 
 
 function generateRandomString(checkObj) {

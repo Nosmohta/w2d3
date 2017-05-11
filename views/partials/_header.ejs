@@ -4,18 +4,16 @@
 
 <div>
   <div class="nav" align="left">
+    <a href="/">Home</a>
     <a href="/urls">URLs</a>
     <a href="/urls/new">New</a>
+    <a href="/login">Login</a>
   </div>
   <div align="right">
     <% if ( username === undefined ) { %>
       <h4> Sign in</h4>
-      <form name="login" id="login" method="POST" action="/login">
-        <input name="username" for="login" placeholder="Enter Name">
-        <button name="lButton" for="login">Sign in</button>
-      </form>
-      <form method="GET" action="/register">
-        <button  >Register</button>
+      <form method="GET" action="/login">
+        <button  >login</button>
       </form>
     <% } else { %>
       <h4> Welcome, <%= username %> </h4>

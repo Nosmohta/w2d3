@@ -3,7 +3,7 @@ let database = {
     "randomID1" : {
       "id" : "randomID1",
       "email": "andrew@thomson.earth",
-      "name": "andrew",
+      "name": "Andrew",
       "password": "password",
       "urlsDB": {
         "aaaaaa" : "www.google.ca",

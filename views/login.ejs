@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <title>TinyApp</title>
+    <% include ./partials/_head-general %>
+  </head>
+
+  <body>
+    <div align="center">
+      <div>
+       <% include ./partials/_header %>
+      </div>
+      <h4> Please Login </h4>
+      <form Name="login" method="POST" action="/login">
+        <p>Email:<input name="email" type="email" placeholder="Sam@sample.com"></p>
+        <p>Password:<input name="password" type="password"></p>
+        <p>
+        <button for="login" type="submit" > Submit </button>
+        </p>
+
+      </form>
+    </div>
+  </body>
+</html>
