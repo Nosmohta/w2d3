@@ -3,16 +3,15 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const crypto = require("crypto");
+const database = require("./database/database.js");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com",
-  "dfgoin": "http://www.amazon.ca",
-  "sdfjkb": "http://www.wikipedia.com"
-};
+const urlDatabase = database.urlDatabase;
+const users =database.users;
+
+console.log(database.users)
 
 
 function startServer() {
@@ -20,7 +19,8 @@ function startServer() {
   let templateVars = {
     urls: urlDatabase,
     username:  undefined ,
-    curShortURL: ""
+    curShortURL: "",
+    msg: ""
   }
 
   app.set("view engine", "ejs");
@@ -71,10 +71,31 @@ function startServer() {
     res.render( "register", templateVars);
   });
 
+
+
   app.post( "/register",  (req, res) => {
-    console.log("Attemp to register")
-    res.redirect("/register")
-  })
+    if ( req.body.email == "") {
+      res.status(400).send( "Please provide valid email.");
+      return;
+    }
+    for (let user in users) {
+      if(req.body.email == users[user].email ) {
+        res.status(400).send( "Email is already in our database.");
+        return;
+      };
+    };
+    let id = generateRandomString(users);
+    users[id] = { "id" : id,
+                  "email" : req.body.email,
+                  "password" : req.body.password,//Make hash
+                  "urlsDB": {}
+    };
+    res.cookie( "userID", id);
+    console.log(users)
+    res.redirect("/urls");
+
+  });
+
 
   app.get( "/login", (req, res) => {
     res.send( "You have tried to login");
