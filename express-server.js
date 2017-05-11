@@ -83,12 +83,11 @@ function startServer() {
     res.redirect("/urls");
   });
 
-
-
-  // app.get(("/login/:username"), (req, res) => {
-  //   console.log("This person has logged in:" + req.params.username);
-  //   res.render("urls_index", templateVars);
-  // });
+  app.post( "/logout", (req, res) => {
+    // change current user to undefined.
+    templateVars.username = undefined;
+    res.redirect("/urls");
+  });
 
   app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}!`);
