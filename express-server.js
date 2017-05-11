@@ -19,7 +19,7 @@ function startServer() {
 
   let templateVars = {
     urls: urlDatabase,
-    username: "",
+    username:  undefined ,
     curShortURL: ""
   }
 
@@ -34,7 +34,6 @@ function startServer() {
   });
 
   app.get("/urls", (req, res) => {
-    let templateVars = { urls: urlDatabase };
     res.render("urls_index", templateVars);
   });
 
@@ -77,18 +76,19 @@ function startServer() {
 
   app.post( "/login", (req, res) => {
     //needs to check for preexisting usernames
-    console.log(req.body);
-    res.cookie( "username", req.body.username)
-    res.redirect("/login/" + req.body.username);
+    console.log(req.body.username);
+    res.cookie( "username", req.body.username);
+    templateVars.username = req.body.username;
+    console.log( templateVars.username)
+    res.redirect("/urls");
   });
 
 
 
-  app.get(("/login/:username"), (req, res) => {
-    console.log("This person has logged in:" + req.params.username);
-    let templateVars = { urls: urlDatabase };
-    res.render("urls_index", templateVars);
-  });
+  // app.get(("/login/:username"), (req, res) => {
+  //   console.log("This person has logged in:" + req.params.username);
+  //   res.render("urls_index", templateVars);
+  // });
 
   app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}!`);
