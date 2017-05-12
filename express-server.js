@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser')
 const crypto = require("crypto");
+const bcrypt = require("bcrypt");
 const database = require("./database/database.js");
 
 
@@ -17,7 +18,7 @@ function startServer() {
   const PORT = process.env.PORT || 8080;
 
   let templateVars = {
-    urls: database.urlDatabase,
+    urls: urlDatabase,
     username:  undefined,
     curShortURL: ""
   };
@@ -96,12 +97,14 @@ function startServer() {
       };
     };
     let id = generateRandomString(users);
+    let PW = bcrypt.hashSync(req.body.password, 10);
     users[id] = { "id" : id,
                   "name": req.body.name,
                   "email" : req.body.email,
-                  "password" : req.body.password,
-                  "urlsDB": {}
+                  "password" : PW,
+                  "urlsDB": { "x1x1x1": "www.YourFirstShortURL.com"}
     };
+    console.log(users[id]);
     res.cookie( "userID", id);
     console.log(users[id])
     res.redirect("/login");
@@ -113,17 +116,19 @@ function startServer() {
   });
 
   app.post( "/login", (req, res) => {
-    let userPW = req.body.password;
+    let providedPW = req.body.password;
     let userEmail = req.body.email;
-    if ( !userPW || !userEmail) {
+    if ( !providedPW || !userEmail) {
       res.send("Please enter an email and password.")
     };
     for ( let user in users) {
       if ( users[user].email === userEmail) {
-        templateVars.username = users[user].name;
-        templateVars.urls = users[user].urlsDB;
-        res.cookie("userID" , users[user].id );
-        res.redirect("/urls");
+        if ( bcrypt.compareSync( providedPW, users[user].password) ) {
+          templateVars.username = users[user].name;
+          templateVars.urls = users[user].urlsDB;
+          res.cookie("userID" , users[user].id );
+          res.redirect("/urls");
+        }
       }
     };
     res.send("Email and Password do not match. Please try again.");
@@ -131,7 +136,7 @@ function startServer() {
 
   app.post( "/logout", (req, res) => {
     templateVars.username = undefined;
-    res.redirect("/urls");
+    res.redirect("/");
   });
 
   app.listen(PORT, () => {
