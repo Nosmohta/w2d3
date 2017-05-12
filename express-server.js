@@ -28,17 +28,18 @@ function startServer() {
 
 
   app.get("/", (req, res) => {
-    res.render("urls_index", templateVars);
+    res.render("welcome", templateVars);
   });
 
   app.get("/urls", (req, res) => {
     res.render("urls_index", templateVars);
   });
 
-  app.post("/urls", (req, res) => {
-    let shortURL = generateRandomString(urlDatabase);
-    urlDatabase[shortURL] = req.body.longURL;
-    res.redirect("/urls/"+shortURL)
+  app.post("/urls/new", (req, res) => {
+    let shortURL = generateRandomString();
+    let id = req.cookies.userID;
+    users[id].urlsDB[shortURL] = req.body.longURL;
+    res.redirect("/urls")
   });
 
   app.get("/urls/new", (req, res) => {
@@ -57,8 +58,16 @@ function startServer() {
   });
 
   app.get("/u/:shortURL", (req, res) => {
-    let longURL = templateVars.urls[req.params.shortURL]
-    res.redirect(longURL);
+    let shortURL = req.params.shortURL
+    console.log(req.params.shortURL)
+    let longURL = ""
+    for (let userId in users) {
+      console.log(users[userId].urlsDB)
+      if (users[userId].urlsDB.hasOwnProperty(shortURL)) {
+        longURL = users[userId].urlsDB[shortURL];
+      }
+    }
+    res.redirect("http://" + longURL);
   });
 
   app.get("/urls/:id", (req, res) => {
@@ -88,13 +97,14 @@ function startServer() {
     };
     let id = generateRandomString(users);
     users[id] = { "id" : id,
+                  "name": req.body.name,
                   "email" : req.body.email,
                   "password" : req.body.password,
                   "urlsDB": {}
     };
     res.cookie( "userID", id);
-    console.log(users)
-    res.redirect("/urls");
+    console.log(users[id])
+    res.redirect("/login");
   });
 
 
@@ -112,13 +122,11 @@ function startServer() {
       if ( users[user].email === userEmail) {
         templateVars.username = users[user].name;
         templateVars.urls = users[user].urlsDB;
-        if ( !req.cookies.userID) {
-          res.cookie("userID" , users[user].id );
-        }
-        res.redirect("/");
-      };
+        res.cookie("userID" , users[user].id );
+        res.redirect("/urls");
+      }
     };
-    res.send("email and Password do not match. Please try again.");
+    res.send("Email and Password do not match. Please try again.");
   });
 
   app.post( "/logout", (req, res) => {
@@ -135,7 +143,7 @@ function startServer() {
 
 function generateRandomString(checkObj) {
   let randStr = crypto.randomBytes(3).toString('hex');
-  if (checkObj.hasOwnProperty(randStr)){
+  if (checkObj && checkObj.hasOwnProperty(randStr)){
     return generateRandomString(checkObj);
   };
   return randStr;

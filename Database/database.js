@@ -7,8 +7,8 @@ let database = {
       "password": "password",
       "urlsDB": {
         "aaaaaa" : "www.google.ca",
-        "bbbbbb" : "www.thomson.earth",
-        "cccccc" : "www.MyOthersite.com"
+        "bbbbbb" : "www.thomson.com",
+        "cccccc" : "www.bike.com"
       }
     },
     "randomID2": {
@@ -17,19 +17,11 @@ let database = {
       "name": "andrew",
       "password": "pasword",
       "urlsDB": {
-        "aaaaaa" : "www.google.com",
-        "bbbbbb" : "www.thomson.Mars",
-        "cccccc" : "www.wikipedia.com"
+        "dddddd" : "www.google.com",
+        "eeeeee" : "www.cbc.ca",
+        "ffffff" : "www.wikipedia.com"
       }
     }
-  },
-
-
-  "urlDatabase" : {
-      "b2xVn2": "http://www.lighthouselabs.ca",
-      "9sm5xK": "http://www.google.com",
-      "dfgoin": "http://www.amazon.ca",
-      "sdfjkb": "http://www.wikipedia.com"
   }
 
 }
