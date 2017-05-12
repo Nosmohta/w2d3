@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 
 <!--views/partials/_header -->
+<% if ( username === undefined ) { %>
+<div>
+  <div class="nav" align="left">
+    <a href="/">Home</a>
+    <a href="/login">Login</a>
+    <a href="/register">Register</a>
+  </div>
+  <div align="right">
+
+
+
+      <h4> Sign in</h4>
+      <form method="GET" action="/login">
+        <button  >login</button>
+      </form>
+
+
+ <% } else { %>
 
 <div>
   <div class="nav" align="left">
@@ -10,21 +28,18 @@
     <a href="/login">Login</a>
     <a href="/register">Register</a>
   </div>
-  <div align="right">
-    <% if ( username === undefined ) { %>
-      <h4> Sign in</h4>
-      <form method="GET" action="/login">
-        <button  >login</button>
-      </form>
-    <% } else { %>
-      <h4> Welcome, <%= username %> </h4>
-      <form name="logout" method="POST" action="/logout">
-        <button>Logout</button>
-      </form>
-    <% } %>
 
-  </div>
+  <div class="nav" align="left">
+    <h4> Welcome, <%= username %> </h4>
+    <form name="logout" method="POST" action="/logout">
+      <button>Logout</button>
+    </form>
+ </div>
 </div>
+
+<% } %>
+
+
 
 
 <h1 align=center > ShortenR </h1>
