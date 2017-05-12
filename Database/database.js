@@ -12,7 +12,7 @@ let database = {
       }
     },
     "randomID2": {
-      "id" : "randomID1",
+      "id" : "randomID2",
       "email" : "Sam@sample.email",
       "name": "andrew",
       "password": "pasword",

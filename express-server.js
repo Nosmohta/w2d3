@@ -7,28 +7,24 @@ const crypto = require("crypto");
 const database = require("./database/database.js");
 
 
-const app = express();
-const PORT = process.env.PORT || 8080;
-
 const urlDatabase = database.urlDatabase;
 const users =database.users;
 
-console.log(database.users)
-
-// need to refactor code to access database)
 
 function startServer() {
+
+  const app = express();
+  const PORT = process.env.PORT || 8080;
 
   let templateVars = {
     urls: database.urlDatabase,
     username:  undefined,
     curShortURL: ""
-  }
+  };
 
   app.set("view engine", "ejs");
-
   app.use(bodyParser.urlencoded({extended: true}));
-  app.use(cookieParser())
+  app.use(cookieParser());
 
 
   app.get("/", (req, res) => {
@@ -47,11 +43,17 @@ function startServer() {
 
   app.get("/urls/new", (req, res) => {
     res.render("urls_new", templateVars);
-  })
+  });
 
   app.post("/urls/:id/delete", (req, res) => {
-      delete urlDatabase[req.params.id];
+    if (req.cookies.userID) {
+      let userID = req.cookies.userID
+      console.log("about to delete:", users[userID].urlsDB[req.params.id])
+      delete users[userID].urlsDB[req.params.id];
+      console.log( users[userID].urlsDB);
       res.redirect("/urls");
+    }
+    res.send("No userID found. Please login and enable cookies.")
   });
 
   app.get("/u/:shortURL", (req, res) => {
@@ -127,9 +129,7 @@ function startServer() {
   app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}!`);
   });
-
 }
-
 
 
 
