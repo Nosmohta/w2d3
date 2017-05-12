@@ -2,7 +2,7 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const cookieParser = require('cookie-parser')
+const session = require('cookie-session')
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const database = require("./database/database.js");
@@ -25,7 +25,12 @@ function startServer() {
 
   app.set("view engine", "ejs");
   app.use(bodyParser.urlencoded({extended: true}));
-  app.use(cookieParser());
+  app.use(session( {
+      name: 'session',
+      keys: ["sdfafbdajf"],
+      maxAge: 24 * 60 * 60 * 1000
+    }
+  ));
 
 
   app.get("/", (req, res) => {
@@ -38,7 +43,7 @@ function startServer() {
 
   app.post("/urls/new", (req, res) => {
     let shortURL = generateRandomString();
-    let id = req.cookies.userID;
+    let id = req.session.userID;
     users[id].urlsDB[shortURL] = req.body.longURL;
     res.redirect("/urls")
   });
@@ -48,8 +53,8 @@ function startServer() {
   });
 
   app.post("/urls/:id/delete", (req, res) => {
-    if (req.cookies.userID) {
-      let userID = req.cookies.userID
+    if (req.session.userID) {
+      let userID = req.session.userID
       console.log("about to delete:", users[userID].urlsDB[req.params.id])
       delete users[userID].urlsDB[req.params.id];
       console.log( users[userID].urlsDB);
@@ -66,9 +71,10 @@ function startServer() {
       console.log(users[userId].urlsDB)
       if (users[userId].urlsDB.hasOwnProperty(shortURL)) {
         longURL = users[userId].urlsDB[shortURL];
+        res.redirect("http://" + longURL)
       }
     }
-    res.redirect("http://" + longURL);
+    res.send("No URL is associated with that Path.");
   });
 
   app.get("/urls/:id", (req, res) => {
@@ -105,7 +111,7 @@ function startServer() {
                   "urlsDB": { "x1x1x1": "www.YourFirstShortURL.com"}
     };
     console.log(users[id]);
-    res.cookie( "userID", id);
+    res.session.userID = id ;
     console.log(users[id])
     res.redirect("/login");
   });
@@ -126,7 +132,9 @@ function startServer() {
         if ( bcrypt.compareSync( providedPW, users[user].password) ) {
           templateVars.username = users[user].name;
           templateVars.urls = users[user].urlsDB;
-          res.cookie("userID" , users[user].id );
+          console.log(users[user].id)
+          console.log(req.session)
+          req.session.userID = users[user].id ;
           res.redirect("/urls");
         }
       }
