@@ -34,6 +34,8 @@ function startServer() {
 
 
   app.get("/", (req, res) => {
+    if ()
+
     res.render("welcome", templateVars);
   });
 
@@ -111,7 +113,7 @@ function startServer() {
                   "urlsDB": { "x1x1x1": "www.YourFirstShortURL.com"}
     };
     console.log(users[id]);
-    res.session.userID = id ;
+    req.session.userID = id ;
     console.log(users[id])
     res.redirect("/login");
   });
@@ -152,6 +154,13 @@ function startServer() {
   });
 }
 
+
+// returns true or false based on login status.
+function isLogIn(requestObj) {
+  let requestObj.
+
+
+}
 
 
 function generateRandomString(checkObj) {
