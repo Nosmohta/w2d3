@@ -7,7 +7,18 @@ The focus of this project has been to utilise the expressJS web framework to bui
 
 ![Alt text](./Database/read-me-images/AddURL.png ?raw=true "Adding URL to Collection")
 
-
+<p align="center">
+  <img src="./Database/read-me-images/Login.png" width="350"/>
+  <p> "Login" </p>
+  <img src="./Database/read-me-image/Register.png" width="350"/>
+  <p> "Register new users" </p>
+  <img src="./Database/read-me-images/Collection.png" width="350"/>
+  <p> "View collection of URLS" </p>
+    <img src="./Database/read-me-images/AddURL.png" width="350"/>
+  <p> "Adding URL to Collection" </p>
+    <img src="./Database/read-me-images/Updating.png" width="350"/>
+  <p> "Update URL in Collection" </p>
+</p>
 
 ## Dependencies
 
