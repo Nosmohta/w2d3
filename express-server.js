@@ -137,8 +137,8 @@ function startServer() {
   });
 
   app.post( "/register",  (req, res) => {
-    if ( req.body.email == "") {
-      res.status(400).send( "Please provide valid email.");
+    if ( !req.body.email || !req.body.name || !req.body.password ) {
+      res.status(400).send( "Please provide valid name, email and password.");
       return;
     }
     for (let user in users) {
