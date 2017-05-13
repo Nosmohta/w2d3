@@ -16,12 +16,29 @@ let database = {
     "randomID2": {
       "id" : "randomID2",
       "email" : "Sam@sample.email",
-      "name": "andrew",
+      "name": "SAM",
       "password": bcrypt.hashSync("password", 10),
       "urlsDB": {
-        "dddddd" : "www.google.com",
-        "eeeeee" : "www.cbc.ca",
-        "ffffff" : "www.wikipedia.com"
+                      "dddddd" : "www.google.com",
+                      "eeeeee" : "www.cbc.ca",
+                      "ffffff" : "www.wikipedia.com"
+                      },
+      "urlsDBLogs":{
+        "dddddd" : {
+          "dateMade": "",
+          "visits": [],
+          "uVisits": []
+        },
+        "eeeeee" : {
+          "dateMade": "",
+          "visits": [],
+          "uVisits": []
+        },
+        "ffffff" : {
+          "dateMade": "",
+          "visits": [],
+          "uVisits": []
+        }
       }
     }
   }

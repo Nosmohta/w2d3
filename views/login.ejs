@@ -12,6 +12,11 @@
        <% include ./partials/_header %>
       </div>
       <h4> Please Login </h4>
+
+      <% if(errorMSG !== "") {  %>
+       <h3> <%= errorMSG %> </h3>
+      <% } %>
+
       <form Name="login" method="POST" action="/login">
         <p>Email:<input name="email" type="email" placeholder="Sam@sample.com"></p>
         <p>Password:<input name="password" type="password"></p>

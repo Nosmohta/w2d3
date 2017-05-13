@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 const database = require("./database/database.js");
 
 
+
 const urlDatabase = database.urlDatabase;
 const users =database.users;
 
@@ -20,7 +21,8 @@ function startServer() {
   let templateVars = {
     urls: urlDatabase,
     username:  undefined,
-    curShortURL: ""
+    curShortURL: "",
+    errorMSG: ""
   };
 
   app.set("view engine", "ejs");
@@ -34,63 +36,114 @@ function startServer() {
 
 
   app.get("/", (req, res) => {
-    if ()
-
-    res.render("welcome", templateVars);
+    if (isLogIn(req)) {
+      res.redirect("/urls");
+    } else {
+      res.redirect("/login");
+    }
   });
 
   app.get("/urls", (req, res) => {
-    res.render("urls_index", templateVars);
+    if( isLogIn(req)) {
+      res.render("urls_index", templateVars);
+    } else {
+      addErMsg( templateVars, "You must Login to view this page.");
+      res.redirect("/login");
+    }
   });
 
-  app.post("/urls/new", (req, res) => {
-    let shortURL = generateRandomString();
-    let id = req.session.userID;
-    users[id].urlsDB[shortURL] = req.body.longURL;
-    res.redirect("/urls")
+  app.post("/urls/", (req, res) => {
+    if (isLogIn(req)) {
+      let shortURL = generateRandomString();
+      let id = req.session.userID;
+      users[id].urlsDB[shortURL] = req.body.longURL;
+
+
+      // users[id].urlsDBlogs[shortURL] = {
+      //     "dateMade": Date.now(),
+      //     "visits": [],
+      //     "uVisits": []
+      //   }
+      // console.log(users[id].urlsDBlogs[shortURL])
+
+      res.redirect("/urls")
+    } else {
+      addErMsg( templateVars, "You must Login to view this page.");
+      res.redirect("/login");
+    }
   });
 
   app.get("/urls/new", (req, res) => {
-    res.render("urls_new", templateVars);
+     if( isLogIn(req)) {
+      res.render("urls_new", templateVars);
+    } else {
+      addErMsg( templateVars, "You must Login to view this page.");
+      res.redirect("/login");
+    }
   });
 
   app.post("/urls/:id/delete", (req, res) => {
-    if (req.session.userID) {
-      let userID = req.session.userID
-      console.log("about to delete:", users[userID].urlsDB[req.params.id])
-      delete users[userID].urlsDB[req.params.id];
-      console.log( users[userID].urlsDB);
-      res.redirect("/urls");
+    if ( isLogIn(req)) {
+      if (users[req.session.userID].urlsDB.hasOwnProperty(req.params.id) ) {
+        let userID = req.session.userID
+        delete users[userID].urlsDB[req.params.id];
+        res.redirect("/urls");
+      } else {
+        res.send("You do not have access to this property.")
+      }
+    } else {
+      addErMsg( templateVars, "You must Login to view this page.");
+      res.redirect("/login");
     }
-    res.send("No userID found. Please login and enable cookies.")
   });
 
   app.get("/u/:shortURL", (req, res) => {
     let shortURL = req.params.shortURL
-    console.log(req.params.shortURL)
     let longURL = ""
     for (let userId in users) {
-      console.log(users[userId].urlsDB)
       if (users[userId].urlsDB.hasOwnProperty(shortURL)) {
         longURL = users[userId].urlsDB[shortURL];
         res.redirect("http://" + longURL)
       }
     }
-    res.send("No URL is associated with that Path.");
+    res.send("No URL is associated with that path.");
   });
 
   app.get("/urls/:id", (req, res) => {
-    templateVars.curShortURL = req.params.id;
-    res.render("urls_show", templateVars);
+    if( isLogIn(req)) {
+      let user = req.session.userID
+      if ( users[user].urlsDB.hasOwnProperty(req.params.id)) {
+        templateVars.curShortURL = req.params.id;
+        res.render("urls_show", templateVars);
+      } else {
+        res.send("Short url not valid.")
+      }
+    } else {
+      addErMsg( templateVars, "You must Login to view this page.");
+      res.redirect("/login");
+    }
   });
 
   app.post( "/urls/:id", (req, res) => {
-    templateVars.urls[req.params.id] = req.body.updateURL;
-    res.redirect("/urls/");
+    if( isLogIn(req)) {
+      if (users[req.session.userID].urlsDB.hasOwnProperty(req.params.id) ) {
+        templateVars.urls[req.params.id] = req.body.updateURL;
+        res.redirect("/urls");
+      } else {
+        res.send("You do not own that short URL property.");
+      }
+    } else {
+      addErMsg( templateVars, "You must Login to view this page.");
+      res.redirect("/login");
+    }
   });
 
   app.get( "/register", (req, res) => {
-    res.render( "register", templateVars);
+    if (isLogIn(req)) {
+      res.redirect("/urls");
+    } else {
+      res.render( "register", templateVars);
+    }
   });
 
   app.post( "/register",  (req, res) => {
@@ -99,28 +152,38 @@ function startServer() {
       return;
     }
     for (let user in users) {
-      if(req.body.email == users[user].email ) {
+      if(req.body.email === users[user].email ) {
         res.status(400).send( "Email is already in our database.");
         return;
-      };
-    };
+      }
+    }
     let id = generateRandomString(users);
     let PW = bcrypt.hashSync(req.body.password, 10);
     users[id] = { "id" : id,
                   "name": req.body.name,
                   "email" : req.body.email,
                   "password" : PW,
-                  "urlsDB": { "x1x1x1": "www.YourFirstShortURL.com"}
-    };
-    console.log(users[id]);
+                  "urlsDB" : {},
+                  // "urlsDBlogs": {
+                  //   "dateMade": "",
+                  //   "visits": [],
+                  //   "uVisits": []
+                  // }
+                }
+    templateVars.username = users[id].name;
+    templateVars.urls = users[id].urlsDB;
+    removeErMsg(templateVars);
     req.session.userID = id ;
-    console.log(users[id])
-    res.redirect("/login");
+    res.redirect("/urls");
   });
 
 
   app.get( "/login", (req, res) => {
-    res.render( "login", templateVars);
+    if (isLogIn(req)) {
+      res.redirect("/urls");
+    } else {
+      res.render( "login", templateVars);
+    }
   });
 
   app.post( "/login", (req, res) => {
@@ -134,9 +197,8 @@ function startServer() {
         if ( bcrypt.compareSync( providedPW, users[user].password) ) {
           templateVars.username = users[user].name;
           templateVars.urls = users[user].urlsDB;
-          console.log(users[user].id)
-          console.log(req.session)
-          req.session.userID = users[user].id ;
+          removeErMsg(templateVars);
+          req.session.userID = users[user].id;
           res.redirect("/urls");
         }
       }
@@ -146,7 +208,9 @@ function startServer() {
 
   app.post( "/logout", (req, res) => {
     templateVars.username = undefined;
-    res.redirect("/");
+    removeErMsg(templateVars);
+    req.session = null;
+    res.redirect("/urls");
   });
 
   app.listen(PORT, () => {
@@ -157,11 +221,23 @@ function startServer() {
 
 // returns true or false based on login status.
 function isLogIn(requestObj) {
-  let requestObj.
-
-
+  let userID = requestObj.session.userID;
+  if ( users.hasOwnProperty( userID)) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
+function addErMsg(templateVars, string) {
+  templateVars.errorMSG = string;
+  return;
+}
+
+function removeErMsg(templateVars){
+  templateVars.errorMSG = "";
+  return;
+}
 
 function generateRandomString(checkObj) {
   let randStr = crypto.randomBytes(3).toString('hex');

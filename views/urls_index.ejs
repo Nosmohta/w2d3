@@ -11,8 +11,8 @@
       <% include ./partials/_header %>
       <ul >
         <% for (let shortUrl in urls) { %>
-        <% let value = urls[shortUrl]; %>
-          <li ><%= value %>  : <%= shortUrl %></li>
+        <% let longURL = urls[shortUrl]; %>
+          <li > http://localhost:/u/<%= shortUrl %>  ==> <%= longURL %> </li>
           <form  id="delete<%= shortUrl%>" method="POST" action="/urls/<%= shortUrl %>/delete">
             <button name="delete" > Delete </button>
           </form>
@@ -21,6 +21,9 @@
           </form>
         <% } %>
       </ul>
+      <form name="create" method="GET" action="/urls/new">
+        <button> Create a new short URL  </button>
+      </form>
     </div>
   </body>
 </html>
