@@ -11,6 +11,23 @@ let database = {
         "aaaaaa" : "www.google.ca",
         "bbbbbb" : "www.thomson.com",
         "cccccc" : "www.bike.com"
+      },
+      "urlsDBLogs":{
+        "aaaaaa" : {
+          "dateMade": "Sat May 13 2017 15:14:50 GMT+0000 (UTC)",
+          "visits": [],
+          "uVisits": []
+        },
+        "bbbbbb" : {
+          "dateMade": "Sat May 13 2017 15:14:50 GMT+0000 (UTC)",
+          "visits": [],
+          "uVisits": []
+        },
+        "cccccc" : {
+          "dateMade": "Sat May 13 2017 15:14:50 GMT+0000 (UTC)",
+          "visits": [],
+          "uVisits": []
+        }
       }
     },
     "randomID2": {
@@ -25,24 +42,23 @@ let database = {
                       },
       "urlsDBLogs":{
         "dddddd" : {
-          "dateMade": "",
+          "dateMade": "Sat May 13 2017 15:14:50 GMT+0000 (UTC)",
           "visits": [],
           "uVisits": []
         },
         "eeeeee" : {
-          "dateMade": "",
+          "dateMade": "Sat May 13 2017 15:14:50 GMT+0000 (UTC)",
           "visits": [],
           "uVisits": []
         },
         "ffffff" : {
-          "dateMade": "",
+          "dateMade": "Sat May 13 2017 15:14:50 GMT+0000 (UTC)",
           "visits": [],
           "uVisits": []
         }
       }
     }
   }
-
 }
 
 module.exports = database = database;

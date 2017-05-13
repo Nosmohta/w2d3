@@ -8,7 +8,6 @@ const bcrypt = require("bcrypt");
 const database = require("./database/database.js");
 
 
-
 const urlDatabase = database.urlDatabase;
 const users =database.users;
 
@@ -57,15 +56,6 @@ function startServer() {
       let shortURL = generateRandomString();
       let id = req.session.userID;
       users[id].urlsDB[shortURL] = req.body.longURL;
-
-
-      // users[id].urlsDBlogs[shortURL] = {
-      //     "dateMade": Date.now(),
-      //     "visits": [],
-      //     "uVisits": []
-      //   }
-      // console.log(users[id].urlsDBlogs[shortURL])
-
       res.redirect("/urls")
     } else {
       addErMsg( templateVars, "You must Login to view this page.");
@@ -163,12 +153,7 @@ function startServer() {
                   "name": req.body.name,
                   "email" : req.body.email,
                   "password" : PW,
-                  "urlsDB" : {},
-                  // "urlsDBlogs": {
-                  //   "dateMade": "",
-                  //   "visits": [],
-                  //   "uVisits": []
-                  // }
+                  "urlsDB" : {}
                 }
     templateVars.username = users[id].name;
     templateVars.urls = users[id].urlsDB;
@@ -218,8 +203,6 @@ function startServer() {
   });
 }
 
-
-// returns true or false based on login status.
 function isLogIn(requestObj) {
   let userID = requestObj.session.userID;
   if ( users.hasOwnProperty( userID)) {
@@ -248,5 +231,5 @@ function generateRandomString(checkObj) {
 }
 
 
-//console.log(generateRandomString(urlDatabase))
 startServer();
+
