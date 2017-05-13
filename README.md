@@ -7,15 +7,15 @@ The focus of this project has been to utilise the expressJS web framework to bui
 
 <p align="center">
   <p> Login view:  </p>
-  <img src="./Database/read-me-images/Login.png" width="200"/>
+  <img src="./Database/read-me-images/Login.png" width="300"/>
   <p> Register new users: </p>
-  <img src="./Database/read-me-images/Register.png" width="200"/>
+  <img src="./Database/read-me-images/Register.png" width="300"/>
   <p> View collection of URLS: </p>
-  <img src="./Database/read-me-images/Collection.png" width="200"/>
+  <img src="./Database/read-me-images/Collection.png" width="300"/>
   <p> Adding URL to Collection: </p>
-  <img src="./Database/read-me-images/AddURL.png" width="200"/>
+  <img src="./Database/read-me-images/AddURL.png" width="300"/>
   <p> Update URL in Collection: </p>
-  <img src="./Database/read-me-images/Updating.png" width="200"/>
+  <img src="./Database/read-me-images/Updating.png" width="300"/>
 </p>
 
 ## Dependencies
