@@ -6,15 +6,18 @@
   </head>
 
   <body>
-    <div align="center">
+    <div  align="center">
        <% include ./partials/_header %>
-        <ul>
-          <li> <%= urls[curShortURL] %>
+    </div>
+    <div class="container">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <a href="/u/<%= curShortURL %>"> <%= urls[curShortURL] %> </a>
+            <form method="POST">
+              <input id="updateURL" name="updateURL" type=text value="<%= urls[curShortURL]%>" >
+              <button action="/urls/<%= curShortURL %>" for="updateURL"> Update </button>
+            </form>
           </li>
-          <form method="POST">
-            <input id="updateURL" name="updateURL" type=text placeholder="<%= urls[curShortURL]%>" >
-            <button action="/urls/<%= curShortURL %>" for="updateURL"> Update </button>
-          </form>
        </ul>
     </div>
   </body>

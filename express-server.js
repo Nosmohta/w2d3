@@ -46,7 +46,7 @@ function startServer() {
     if( isLogIn(req)) {
       res.render("urls_index", templateVars);
     } else {
-      addErMsg( templateVars, "You must Login to view this page.");
+      addErMsg( templateVars, "Please login to view your URLS");
       res.redirect("/login");
     }
   });
@@ -58,7 +58,7 @@ function startServer() {
       users[id].urlsDB[shortURL] = req.body.longURL;
       res.redirect("/urls")
     } else {
-      addErMsg( templateVars, "You must Login to view this page.");
+      addErMsg( templateVars, "Please login to view your URLS");
       res.redirect("/login");
     }
   });
@@ -82,7 +82,7 @@ function startServer() {
         res.send("You do not have access to this property.")
       }
     } else {
-      addErMsg( templateVars, "You must Login to view this page.");
+      addErMsg( templateVars, "You must login to delete URLs from your collection.");
       res.redirect("/login");
     }
   });

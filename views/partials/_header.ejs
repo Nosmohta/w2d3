@@ -2,48 +2,33 @@
 
 <!--views/partials/_header -->
 
+<div class="container" align=center>
 
-<% if ( username === undefined ) { %>
+  <% if ( username === undefined ) { %>
+    <div class="container" >
+      <div align="right">
+        <h5> New user? Please Register</h5>
+        <form name="login" method="GET" action="/register">
+          <button class="btn btn-primary btn-sm">register</button>
+        </form>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="container" >
+      <div align="right">
+        <h5> Welcome, <%= username %> </h5>
+        <form name="logout" method="POST" action="/logout">
+          <button class="btn btn-primary btn-sm">Logout</button>
+        </form>
+    </div>
+  <% } %>
 
-<div>
-  <div class="nav" align="left">
-    <a href="/">Home</a>
-  </div>
-  <div align="right">
-    <form name="login" method="GET" action="/login">
-      <button  >login</button>
-    </form>
+
+  <div class="jumbotron">
+    <h1 align=center > ShortR </h1>
+    <h5 align=center > (The worlds smallest url sortener app) </h5>
   </div>
 </div>
-
-    <% } else { %>
-
-<div>
-  <div class="nav" align="left">
-    <a href="/">Home</a>
-    <a href="/urls">URLs</a>
-    <a href="/urls/new">New</a>
-
-
-  </div>
-  <div align="right">
-    <h4> Welcome, <%= username %> </h4>
-    <form name="logout" method="POST" action="/logout">
-      <button>Logout</button>
-    </form>
-  </div>
- </div>
-
-
-
-<% } %>
-
-
-
-
-
-<h1 align=center > ShortenR </h1>
-<h5 align=center > (The worlds smallest url sortener app) </h5>
 
 
 
