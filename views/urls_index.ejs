@@ -15,7 +15,7 @@
         <% for (let shortUrl in urls) { %>
         <% let longURL = urls[shortUrl]; %>
           <p></p>
-          <li class="list-group-item"><a href="/u/<%= shortUrl %>"> localhost:/u/<%= shortUrl %> </a> ==> <%= longURL %>
+          <li class="list-group-item"><a href="/u/<%= shortUrl %>"> localhost:8080/u/<%= shortUrl %> </a> ==> <%= longURL %>
             <form  id="delete<%= shortUrl%>" method="POST" action="/urls/<%= shortUrl %>/delete">
               <button name="delete" > Delete </button>
             </form>
