@@ -8,9 +8,9 @@ let database = {
       "name": "Andrew",
       "password": bcrypt.hashSync("password", 10),
       "urlsDB": {
-        "aaaaaa" : "www.google.ca",
-        "bbbbbb" : "www.thomson.com",
-        "cccccc" : "www.bike.com"
+        "aaaaaa" : "http://google.ca",
+        "bbbbbb" : "http://thomson.com",
+        "cccccc" : "http://bike.com"
       },
       "urlsDBLogs":{
         "aaaaaa" : {
@@ -36,9 +36,9 @@ let database = {
       "name": "SAM",
       "password": bcrypt.hashSync("password", 10),
       "urlsDB": {
-                      "dddddd" : "www.google.com",
-                      "eeeeee" : "www.cbc.ca",
-                      "ffffff" : "www.wikipedia.com"
+                      "dddddd" : "http://google.com",
+                      "eeeeee" : "http://cbc.ca",
+                      "ffffff" : "http://wikipedia.com"
                       },
       "urlsDBLogs":{
         "dddddd" : {

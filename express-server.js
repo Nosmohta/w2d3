@@ -151,11 +151,10 @@ app.post("/urls/:id/delete", (req, res) => {
  */
 app.get("/u/:shortURL", (req, res) => {
   let shortURL = req.params.shortURL
-  let longURL = ""
   for (let userId in users) {
     if (users[userId].urlsDB.hasOwnProperty(shortURL)) {
-      longURL = users[userId].urlsDB[shortURL];
-      res.redirect("http://" + longURL)
+      let longURL = users[userId].urlsDB[shortURL];
+      res.redirect(longURL)
     }
   }
   res.send("No URL is associated with that path.");
